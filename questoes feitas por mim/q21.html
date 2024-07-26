@@ -6,14 +6,35 @@
     <title>Produtos</title>
 </head>
 <body>
-    <label> Coloque o nome: </label>
+    <form id="formProduto">
+    <br><br><label> Coloque o nome: </label> 
     <input type="text" id="nome" name="nome">
-    <label> Coloque o preço: </label>
-    <input type="number" id="preco" name="preco">
-    <label> Categoria: </label>
-    <select id="categoria"></select>
-    <option value=""></option>
+    <br><br><label> Coloque o preço: </label> 
+    <input type="number" id="preço" name="preço">
+    <br><br><label> Categoria: </label>
+    <select id="categoria">
+    <option value="alimentação">Alimentação</option>
+    <option value="eletrônicos">Eletrônicos</option>
+    <option value="Eletrodomésticos">Eletrodomésticos</option>
+    <option value="Móveis">Móveis</option>
+    <option value="Vestuário">Vestuário</option>
+    </select> <br><br>
+    <label> Descrição </label>
+    <br> <textarea id="descricao"></textarea>
+    <br><br>
+    <button type="button" onclick="descricao()"> Aperte o botão </button>
+    </form>
+
+<h2>Produtos cadastrados</h2>
+<table id="tabelaProdutos" border="1"> 
+    <tr>
+    <th>Nome</th>
+    <th>Preço</th>
+    <th>Categoria</th>
+    <th>Descrição</th>
+    </tr>
+</table>
+
+<script src="q21.js"></script>
 </body>
 </html>
-
-produto, preço, categoria (dropdown com opções pré-definidas) e descrição
