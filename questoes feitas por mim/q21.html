@@ -6,24 +6,26 @@
     <title>Produtos</title>
 </head>
 <body>
+    <h2>Cadastro de produtos</h2>
     <form id="formProduto">
     <br><br><label> Coloque o nome: </label> 
     <input type="text" id="nome" name="nome">
     <br><br><label> Coloque o preço: </label> 
-    <input type="number" id="preço" name="preço">
-    <br><br><label> Categoria: </label>
+    <input type="number" id="preco" name="preco">
+    <br><br><label> Categoria: 
+    </label>
     <select id="categoria">
-    <option value="alimentação">Alimentação</option>
-    <option value="eletrônicos">Eletrônicos</option>
-    <option value="Eletrodomésticos">Eletrodomésticos</option>
-    <option value="Móveis">Móveis</option>
-    <option value="Vestuário">Vestuário</option>
+        <option value="Alimentação">Alimentação</option>
+        <option value="Eletrônicos">Eletrônicos</option>
+        <option value="Eletrodomésticos">Eletrodomésticos</option>
+        <option value="Móveis">Móveis</option>
+        <option value="Vestuário">Vestuário</option>
     </select> <br><br>
     <label> Descrição </label>
     <br> <textarea id="descricao"></textarea>
     <br><br>
-    <button type="button" onclick="descricao()"> Aperte o botão </button>
-    </form>
+    <button type="button" onclick="adicionar()"> Aperte o botão </button>
+</form>
 
 <h2>Produtos cadastrados</h2>
 <table id="tabelaProdutos" border="1"> 
