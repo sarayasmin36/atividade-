@@ -15,3 +15,7 @@ resultado = numeros.reduce(function(total, numeros){
     return total + numeros;
 }, 0);
 console.log(resultado.toString());
+
+
+
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
