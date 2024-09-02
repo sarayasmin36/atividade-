@@ -1,0 +1,3 @@
+let cor = "azul";
+
+function 
