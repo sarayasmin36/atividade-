@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exemplo de Tabela com THEAD, TBODY e TFOOT</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-family: Arial, sans-serif;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tfoot {
+            font-weight: bold;
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    <h1>Exemplo de Tabela com Cabeçalho, Dados e Rodapé</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Idade</th>
+                <th>Cidade</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Maria</td>
+                <td>30</td>
+                <td>São Paulo</td>
+            </tr>
+            <tr>
+                <td>João</td>
+                <td>25</td>
+                <td>Rio de Janeiro</td>
+            </tr>
+            <tr>
+                <td>Ana</td>
+                <td>28</td>
+                <td>Belo Horizonte</td>
+            </tr>
+            <tr>
+                <td>Pedro</td>
+                <td>35</td>
+                <td>Curitiba</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3">Total de Pessoas: 4</td>
+            </tr>
+        </tfoot>
+    </table>
+</body>
+</html>
