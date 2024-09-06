@@ -16,8 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
             tbody.innerHTML = '';
 
             // Itera sobre os grupos e times para criar as linhas da tabela
-            resp.forEach(grupo => {
-                grupo.teams.forEach(time => {
+            resp.forEach(time => {
                     const tr = document.createElement('tr');
 
                     // Cria células para cada dado do time
@@ -31,13 +30,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         <td>${time.losses}</td>
                         <td>${time.games_played}</td>
                         <td>${time.goals_for}</td>
-                        <td>${time.goalagainst}</td>
-                        <td>${time.gols_diferencial}</td>
+                        <td>${time.goal_against}</td>
+                        <td>${time.gols_differencial}</td>
                     `;
                     // Adiciona a linha ao tbody
                     tbody.appendChild(tr);
                 });
-            });
         } catch (error) {
             console.error('Erro ao carregar dados da API:', error);
         }
