@@ -1,13 +1,9 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // URL da API
-    const apiURL = 'https://worldcupjson.net/teams';
+const url_teams = 'https://worldcupjson.net/teams';
 
-    // Função para fazer a requisição e preencher a tabela
-    async function carregarClassificacao() {
-        try {
-            // Fazendo a requisição à API
-            const response = await fetch(apiURL);
-            const resp = await response.json();
+    fetch(url_teams) 
+        .then(response => response.json())
+        .then(times => {
+        console.log('Dados recebidos:', times);
 
             // Seleciona o tbody da tabela
             const tbody = document.querySelector('#classificacao tbody');
@@ -16,13 +12,13 @@ document.addEventListener('DOMContentLoaded', function() {
             tbody.innerHTML = '';
 
             // Itera sobre os grupos e times para criar as linhas da tabela
-            resp.forEach(time => {
+            times.forEach(time => {
                     const tr = document.createElement('tr');
 
                     // Cria células para cada dado do time
                     tr.innerHTML = `
-                        <td>${time.country}</td>
-                        <td>${time.group_points}</td>
+                        <td>${times.country}</td>
+                        <td>${times.group_points}</td>
                         <td>${time.name}</td>
                         <td>${time.group_letter}</td>
                         <td>${time.wins}</td>
@@ -30,17 +26,11 @@ document.addEventListener('DOMContentLoaded', function() {
                         <td>${time.losses}</td>
                         <td>${time.games_played}</td>
                         <td>${time.goals_for}</td>
-                        <td>${time.goal_against}</td>
+                        <td>${time.goals_against}</td>
                         <td>${time.gols_differencial}</td>
                     `;
                     // Adiciona a linha ao tbody
                     tbody.appendChild(tr);
-                });
-        } catch (error) {
-            console.error('Erro ao carregar dados da API:', error);
-        }
-    }
-
-    // Chama a função para carregar a classificação
-    carregarClassificacao();
-});
+            });
+        })
+        .catch(error => console.error('Erro ao carregar dados da API:', error));

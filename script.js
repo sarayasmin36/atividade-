@@ -1,48 +1,52 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // URL da API
-    const apiURL = 'https://worldcupjson.net/2018/groups';
+// URL da API
+const urlTeams = 'https://worldcupjson.net/teams';
 
-    // Função para fazer a requisição e preencher a tabela
-    async function carregarClassificacao() {
-        try {
-            // Fazendo a requisição à API
-            const response = await fetch(apiURL);
-            const data = await response.json();
-
-            // Seleciona o tbody da tabela
-            const tbody = document.querySelector('#tabela-classificacao tbody');
-
-            // Limpa o conteúdo do tbody
-            tbody.innerHTML = '';
-
-            // Itera sobre os grupos e times para criar as linhas da tabela
-            data.forEach(grupo => {
-                grupo.teams.forEach(time => {
-                    const tr = document.createElement('tr');
-
-                    // Cria células para cada dado do time
-                    tr.innerHTML = `
-                        <td>${grupo.name}</td>
-                        <td>${time.team}</td>
-                        <td>${time.played}</td>
-                        <td>${time.win}</td>
-                        <td>${time.draw}</td>
-                        <td>${time.loss}</td>
-                        <td>${time.goalsFor}</td>
-                        <td>${time.goalsAgainst}</td>
-                        <td>${time.goalDifference}</td>
-                        <td>${time.points}</td>
-                    `;
-
-                    // Adiciona a linha ao tbody
-                    tbody.appendChild(tr);
-                });
-            });
-        } catch (error) {
-            console.error('Erro ao carregar dados da API:', error);
-        }
+// Função para fazer a requisição à API
+async function fetchData(url) {
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Erro ao carregar dados da API:', error);
+        return [];
     }
+}
 
-    // Chama a função para carregar a classificação
-    carregarClassificacao();
-});
+// Função para processar os dados e preencher a tabela
+function processData(data) {
+    const rows = data.map(time => {
+        return `
+            <tr>
+                <td>${time.country}</td>
+                <td>${time.group_points}</td>
+                <td>${time.name}</td>
+                <td>${time.group_letter}</td>
+                <td>${time.wins}</td>
+                <td>${time.draws}</td>
+                <td>${time.losses}</td>
+                <td>${time.games_played}</td>
+                <td>${time.goals_for}</td>
+                <td>${time.goals_against}</td>
+                <td>${time.goal_difference}</td>
+            </tr>
+        `;
+    });
+    return rows;
+}
+
+// Função para adicionar as linhas à tabela
+function populateTable(rows) {
+    const tbody = document.querySelector('#classificacao tbody');
+    tbody.innerHTML = rows.join('');
+}
+
+// Função principal para carregar a classificação
+async function carregarClassificacao() {
+    const data = await fetchData(urlTeams);
+    const rows = processData(data);
+    populateTable(rows);
+}
+
+// Chama a função para carregar a classificação quando o DOM estiver carregado
+document.addEventListener('DOMContentLoaded', carregarClassificacao);
