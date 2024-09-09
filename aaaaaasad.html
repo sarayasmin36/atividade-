@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabela de Classificação da Copa do Mundo</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tabela de Classificação dos Grupos</h1>
+    <table id="classificacao">
+        <thead>
+            <tr>
+                <th>Grupo</th>
+                <th>Equipe</th>
+                <th>Posição</th>
+                <th>Pontos</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Dados serão inseridos aqui -->
+        </tbody>
+    </table>
+    <script>
+        async function carregarClassificacao() {
+            try {
+                const resposta = await fetch('https://worldcupjson.net/teams');
+                const dados = await resposta.json();
+
+                const tabela = document.getElementById('classificacao').getElementsByTagName('tbody')[0];
+                
+                dados.forEach(equipe => {
+                    // Supondo que os dados do grupo estejam em uma estrutura específica,
+                    // Você precisará ajustar isso com base na estrutura real dos dados
+                    const grupo = equipe.group || 'Desconhecido';
+                    const nome = equipe.name;
+                    const posicao = equipe.position || 'N/A';  // Ajuste conforme necessário
+                    const pontos = equipe.points || 0;  // Ajuste conforme necessário
+
+                    const linha = tabela.insertRow();
+                    linha.insertCell().textContent = grupo;
+                    linha.insertCell().textContent = nome;
+                    linha.insertCell().textContent = posicao;
+                    linha.insertCell().textContent = pontos;
+                });
+            } catch (erro) {
+                console.error('Erro ao carregar os dados:', erro);
+            }
+        }
+
+        carregarClassificacao();
+    </script>
+</body>
+</html>
