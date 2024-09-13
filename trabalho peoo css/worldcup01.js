@@ -54,7 +54,10 @@ function mostrarJogos(jogosFiltrados) {
             Time da casa: ${jogo.home_team.country} <br>
             Time de fora: ${jogo.away_team.country} <br>
             Estádio: ${jogo.venue} <br>
-            Placar: ${jogo.home_team.goals} - ${jogo.away_team.goals} <br><hr>
+            Placar: ${jogo.home_team.goals} - ${jogo.away_team.goals} <br>
+            Pênaltis: ${jogo.home_team.country} (${jogo.home_team.penalties}) - (${jogo.away_team.penalties}) ${jogo.away_team.country} <br>
+            Vencedor: ${jogo.winner} <br>
+            <hr>
         `;
         result.appendChild(div);
     });
