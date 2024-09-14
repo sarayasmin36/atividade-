@@ -51,12 +51,15 @@ function mostrarJogos(jogosFiltrados) {
         div.innerHTML = `
             <hr>#${jogo.id} <br>
             Data e hora: ${jogo.datetime} <br>
+            Público: ${jogo.attendance} pessoas<br>
             Time da casa: ${jogo.home_team.country} <br>
             Time de fora: ${jogo.away_team.country} <br>
             Estádio: ${jogo.venue} <br>
-            Placar: ${jogo.home_team.goals} - ${jogo.away_team.goals} <br>
-            Pênaltis: ${jogo.home_team.country} (${jogo.home_team.penalties}) - (${jogo.away_team.penalties}) ${jogo.away_team.country} <br>
-            Vencedor: ${jogo.winner} <br>
+            Local: ${jogo.location} <br>
+            Placar: <br>
+            ${jogo.home_team.country} -> ${jogo.home_team.goals} (${jogo.home_team.penalties})<br>
+            ${jogo.away_team.country} -> ${jogo.away_team.goals} (${jogo.away_team.penalties})<br>
+            Resultado: ${jogo.winner} <br>
             <hr>
         `;
         result.appendChild(div);

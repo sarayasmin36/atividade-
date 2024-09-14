@@ -13,13 +13,15 @@ function gerarFinal(jogo) {
     div.innerHTML = `
         <hr>${jogo.stage_name} <br>
         Data e hora: ${jogo.datetime} <br>
+        Público: ${jogo.attendance} <br>
         Time da casa: ${jogo.home_team.country} <br>
         Time de fora: ${jogo.away_team.country} <br>
         Estádio: ${jogo.venue} <br>
         Local: ${jogo.location} <br>
-        Placar: ${jogo.home_team.country} ${jogo.home_team.goals} (${jogo.home_team.penalties}) - ${jogo.away_team.goals} (${jogo.away_team.penalties}) ${jogo.away_team.country}<br><hr>
-        Público: ${jogo.attendance} <br>
-        Vencedor: ${jogo.winner_code} <br>
+        Placar: <br>
+        ${jogo.home_team.country} -> ${jogo.home_team.goals} (${jogo.home_team.penalties})<br>
+        ${jogo.away_team.country} -> ${jogo.away_team.goals} (${jogo.away_team.penalties})<br>
+        <div class="winner-line">Vencedor: ${jogo.winner_code}</div>
     `;
     result.appendChild(div);
 };
