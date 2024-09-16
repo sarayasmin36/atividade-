@@ -59,7 +59,7 @@ function mostrarJogos(jogosFiltrados) {
             Placar: <br>
             ${jogo.home_team.country} -> ${jogo.home_team.goals} (${jogo.home_team.penalties})<br>
             ${jogo.away_team.country} -> ${jogo.away_team.goals} (${jogo.away_team.penalties})<br>
-            Resultado: ${jogo.winner} <br>
+            <div class="winner-line">Vencedor: ${jogo.winner_code}</div>
             <hr>
         `;
         result.appendChild(div);
