@@ -13,23 +13,30 @@ fetch(url)
             }); 
         });            
 
-    function escolher_hora() {
-        const timezone = document.getElementById('hora').value
-        const url_time = `https://worldtimeapi.org/api/timezone/${timezone}`;
-
+function escolher_hora() {
+        const timezone = select.value; // Obtém o fuso horário selecionado
+    if (timezone) {
+        const url_time = `https://worldtimeapi.org/api/timezone/${timezone}`; // URL para buscar a hora do fuso selecionado
+        horarios(url_time); // Chama a função que busca os horários
+    } else {
+        resultado.innerHTML = 'Por favor, selecione um fuso horário.';
     }
+}
 
-    function horarios(timezone) {
-        fetch (url_timzone)
+    function horarios(url_time) {
+        fetch(url_time)
         .then(response => response.json())
         .then(fuso => {
-            const datetime = fuso.datetime;  
+        const datetime = fuso.datetime; 
+        const [date, time] = datetime.split('T');
         const div = document.createElement('div');
         div.innerHTML = `
-        "Lugar": ${timezone.timezone}<br>
-        "Lugar": ${timezone.datetime}<br>
+        <hr> Lugar: ${fuso.timezone}<br>
+        <hr> Data: ${date}<br>
+        <hr> Hora: ${time.split('.')[0]}<br>
+        <hr>
         `;
+        result.innerHTML= ``;
         result.appendChild(div);
-    };
-
-escolher_hora();
+    });
+};
