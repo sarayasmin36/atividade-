@@ -1,0 +1,113 @@
+<div id="dropdown" class="dropdown">
+    <div id="selected" class="selected">Selecione um Pokémon</div>
+    <div id="options" class="options">
+        <!-- As opções serão inseridas aqui -->
+    </div>
+</div>
+<div id="result"></div>
+
+<style>
+    .dropdown {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+    }
+    .options {
+        display: none;
+        position: absolute;
+        background-color: white;
+        border: 1px solid #ccc;
+        z-index: 1;
+        width: 200px;
+    }
+    .option {
+        padding: 8px;
+        display: flex;
+        align-items: center;
+    }
+    .option img {
+        width: 30px; /* Ajuste o tamanho conforme necessário */
+        height: auto;
+        margin-right: 8px;
+    }
+</style>
+
+<script>
+const url = "https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0";
+const dropdown = document.getElementById('dropdown');
+const selected = document.getElementById('selected');
+const optionsContainer = document.getElementById('options');
+const resultado = document.getElementById('result');
+
+// Busca a lista de Pokémon
+fetch(url)
+    .then(response => response.json())
+    .then(poke => { 
+        const ordempoke = poke.results.sort((a, b) => {
+            return a.name.localeCompare(b.name);
+        });
+
+        ordempoke.forEach(pokemon => {
+            const optionDiv = document.createElement('div');
+            optionDiv.classList.add('option');
+            optionDiv.textContent = pokemon.name; // Nome do Pokémon
+
+            // Obtendo a imagem do Pokémon
+            fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon.name}`)
+                .then(response => response.json())
+                .then(pokemonData => {
+                    const img = document.createElement('img');
+                    img.src = pokemonData.sprites.front_default; // URL da imagem
+                    optionDiv.prepend(img); // Adiciona a imagem antes do texto
+
+                    // Evento de clique
+                    optionDiv.addEventListener('click', () => {
+                        selected.textContent = pokemon.name;
+                        optionsContainer.style.display = 'none'; // Oculta as opções
+                        pokemons(`https://pokeapi.co/api/v2/pokemon/${pokemon.name}`);
+                    });
+                });
+
+            optionsContainer.appendChild(optionDiv);
+        }); 
+    })
+    .catch(error => console.error('Erro ao buscar dados:', error)); 
+
+// Lógica para mostrar/ocultar as opções
+selected.addEventListener('click', () => {
+    optionsContainer.style.display = optionsContainer.style.display === 'block' ? 'none' : 'block';
+});
+
+function pokemons(pokeurl) {
+    fetch(pokeurl)
+    .then(response => response.json())
+    .then(pokemo => {
+        const div = document.createElement('div');
+
+        // Obtendo a URL do pokemon-form para buscar a imagem
+        const pokemonFormUrl = `https://pokeapi.co/api/v2/pokemon-form/${pokemo.id}/`;
+        return fetch(pokemonFormUrl);
+    })
+    .then(response => response.json())
+    .then(formData => {
+        const imagemUrl = formData.sprites.front_default; // URL da imagem
+        let habilidades = '';
+
+        pokemo.abilities.forEach(ability => {
+            habilidades += `${ability.ability.name}<br>`;
+        });
+
+        // Montando o HTML
+        div.innerHTML = `
+            <h2>${pokemo.name}</h2>
+            <img src="${imagemUrl}" alt="${pokemo.name}" style="width: 100px; height: auto;"><br>
+            <hr> Habilidades: <br>${habilidades}
+            <hr>
+        `;
+
+        resultado.innerHTML = ''; // Limpa o resultado anterior
+        resultado.appendChild(div); // Adiciona o novo conteúdo
+    })
+    .catch(error => console.error('Erro ao buscar dados:', error));
+}
+</script>
