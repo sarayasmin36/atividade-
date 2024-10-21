@@ -1,0 +1,18 @@
+/* styles.css */
+.pokemon-container {
+    margin: 10px 0;
+}
+
+.pokemon-image {
+    width: 100px;
+    height: auto;
+}
+
+.pokemon-name {
+    font-size: 1.5em;
+    margin: 0;
+}
+
+.pokemon-abilities {
+    margin-top: 10px;
+}

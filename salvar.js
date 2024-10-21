@@ -1,51 +1,67 @@
-const input = document.getElementById('ano');
+const url = "https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0";
+const select = document.getElementById('poke');
+const resultado = document.getElementById('result');
+const input = document.getElementById('nome');
+const buscarButton = document.getElementById('buscar');
 
-function calculo() {
-        const ano = input.value; 
-        if (ano) {
-            const url = `https://brasilapi.com.br/api/feriados/v1/${ano}`;
-            anos(url);
-        } else {
-            result.innerHTML = 'Por favor, ponha uma data.';
-        }
-    }
+// Carrega a lista de Pokémon
+fetch(url)
+    .then(response => response.json())
+    .then(poke => {
+        poke.results.forEach(pokemon => {
+            const option = document.createElement('option');
+            option.value = pokemon.name;
+            option.textContent = pokemon.name;
+            select.appendChild(option);
+        });
+    })
+    .catch(error => console.error('Erro ao buscar dados:', error));
 
-    function anos(url) {
-        fetch(url)
+// Função para buscar Pokémon
+function pokemons(pokeurl) {
+    fetch(pokeurl)
         .then(response => {
             if (!response.ok) {
-                throw new Error('Erro ao obter dados: ' + response.statusText);
+                throw new Error('Pokémon não encontrado');
             }
             return response.json();
         })
-        .then(feriados => {
-            // Organizando os feriados por mês
-            const feriadosPorMes = {};
-    
-            feriados.forEach(feriado => {
-                const data = new Date(feriado.date);
-                const mes = data.toLocaleString('default', { month: 'long' });
-                const dia = data.getDate();
-    
-                if (!feriadosPorMes[mes]) {
-                    feriadosPorMes[mes] = [];
-                }
-                feriadosPorMes[mes].push(`${dia} - ${feriado.name}`);
-            });
-    
-            // Criando o conteúdo HTML
+        .then(pokemo => {
             const div = document.createElement('div');
-            div.innerHTML = `<hr> Total de feriados: ${feriados.length} <br>`;
-    
-            for (const mes in feriadosPorMes) {
-                div.innerHTML += `<strong>${mes.charAt(0).toUpperCase() + mes.slice(1)}</strong><br>`;
-                div.innerHTML += feriadosPorMes[mes].join('<br>') + '<br><hr>';
-            }
-    
-            result.innerHTML = '';
-            result.appendChild(div);
+            div.classList.add('pokemon-container');
+
+            let habilidades = '';
+            pokemo.abilities.forEach(ability => {
+                habilidades += `${ability.ability.name}<br>`;
+            });
+
+            const imagemUrl = pokemo.sprites.front_default;
+
+            div.innerHTML = `
+                <h2 class="pokemon-name">${pokemo.name}</h2>
+                <img src="${imagemUrl}" alt="${pokemo.name}" class="pokemon-image"><br>
+                <hr>
+                <div class="pokemon-abilities">Habilidades: <br>${habilidades}</div>
+                <hr>
+            `;
+
+            resultado.innerHTML = '';
+            resultado.appendChild(div);
         })
         .catch(error => {
-            result.innerHTML = 'Erro: ' + error.message;
+            resultado.innerHTML = `<p>${error.message}</p>`;
         });
+}
+
+// Eventos para buscar Pokémon ao clicar no botão ou ao selecionar
+buscarButton.addEventListener('click', () => {
+    const pokemonName = input.value.toLowerCase() || select.value;
+    if (pokemonName) {
+        const pokeurl = `https://pokeapi.co/api/v2/pokemon/${pokemonName}`;
+        pokemons(pokeurl);
     }
+});
+
+select.addEventListener('change', () => {
+    input.value = ''; // Limpa o input ao selecionar um Pokémon
+});
