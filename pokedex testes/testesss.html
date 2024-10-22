@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokédex</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            text-align: center;
+        }
+        .search-container {
+            margin-bottom: 20px;
+        }
+        .pokemon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow-y: auto;
+            max-height: 400px;
+        }
+        .pokemon-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            padding: 5px;
+            transition: transform 0.2s;
+        }
+        .pokemon-item:hover {
+            transform: scale(1.05);
+        }
+        .pokemon-image {
+            width: 80px;
+            height: auto;
+        }
+        .pokemon-name {
+            font-size: 1em;
+            margin: 0;
+        }
+        .pokemon-container {
+            margin: 10px 0;
+            padding: 15px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .pokemon-abilities {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="search-container">
+            <input type="text" id="nome" placeholder="Digite o nome do Pokémon">
+            <button id="buscar">Buscar</button>
+        </div>
+        <div class="pokemon-grid" id="poke"></div>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const url = "https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0";
+        const dropdown = document.getElementById('poke');
+        const resultado = document.getElementById('result');
+        const input = document.getElementById('nome');
+        const buscarButton = document.getElementById('buscar');
+
+        // Carrega a lista de Pokémon
+        fetch(url)
+            .then(response => response.json())
+            .then(poke => {
+                poke.results.forEach(pokemon => {
+                    const pokeItem = document.createElement('div');
+                    pokeItem.classList.add('pokemon-item');
+
+                    // Obtendo a imagem do Pokémon
+                    fetch(pokemon.url)
+                        .then(response => response.json())
+                        .then(pokemonData => {
+                            const img = document.createElement('img');
+                            img.src = pokemonData.sprites.front_default;
+                            img.classList.add('pokemon-image');
+                            const name = document.createElement('p');
+                            name.textContent = pokemon.name;
+                            name.classList.add('pokemon-name');
+                            
+                            pokeItem.appendChild(img);
+                            pokeItem.appendChild(name);
+
+                            // Evento de clique para selecionar o Pokémon
+                            pokeItem.addEventListener('click', () => {
+                                input.value = pokemon.name;
+                                fetchPokemonData(pokemon.name); // Fetch data immediately when clicked
+                            });
+                        });
+
+                    dropdown.appendChild(pokeItem);
+                });
+            })
+            .catch(error => console.error('Erro ao buscar dados:', error));
+
+        // Função para buscar Pokémon e exibir informações
+        function fetchPokemonData(pokemonName) {
+            const pokeurl = `https://pokeapi.co/api/v2/pokemon/${pokemonName}`;
+            fetch(pokeurl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Pokémon não encontrado');
+                    }
+                    return response.json();
+                })
+                .then(pokemo => {
+                    const div = document.createElement('div');
+                    div.classList.add('pokemon-container');
+
+                    let habilidades = '';
+                    pokemo.abilities.forEach(ability => {
+                        habilidades += `${ability.ability.name}<br>`;
+                    });
+
+                    const imagemUrl = pokemo.sprites.front_default;
+
+                    div.innerHTML = `
+                        <h2 class="pokemon-name">${pokemo.name}</h2>
+                        <img src="${imagemUrl}" alt="${pokemo.name}" class="pokemon-image"><br>
+                        <hr>
+                        <div class="pokemon-abilities">Habilidades: <br>${habilidades}</div>
+                        <hr>
+                    `;
+
+                    resultado.innerHTML = '';
+                    resultado.appendChild(div);
+                })
+                .catch(error => {
+                    resultado.innerHTML = `<p>${error.message}</p>`;
+                });
+        }
+
+        // Busca Pokémon ao clicar no botão
+        buscarButton.addEventListener('click', () => {
+            const pokemonName = input.value.toLowerCase();
+            if (pokemonName) {
+                fetchPokemonData(pokemonName);
+            }
+        });
+    </script>
+</body>
+</html>
